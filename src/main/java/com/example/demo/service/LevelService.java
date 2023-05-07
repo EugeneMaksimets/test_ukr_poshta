@@ -16,6 +16,6 @@ public interface LevelService {
 
     List<Level> getAll();
 
-//    Person setLevel(Long id, String level);
+    Person setLevel(Long id, String level);
 
 }

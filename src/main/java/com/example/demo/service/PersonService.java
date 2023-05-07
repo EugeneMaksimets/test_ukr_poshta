@@ -16,6 +16,4 @@ public interface PersonService {
 
     List<Person> getAll();
 
-    Person setLevel(Long id, String level);
-
 }

@@ -46,7 +46,7 @@ public class RoleController {
         return roleService.getAll();
     }
 
-    @PutMapping("/person/{id}/set/role/{role}")
+    @PutMapping("/role/{role}/set/person/{id}")
     public Person setRole(@PathVariable Long id, @PathVariable String role) {
         return roleService.setRole(id, role);
     }

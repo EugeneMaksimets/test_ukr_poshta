@@ -43,9 +43,5 @@ public class PersonController {
         return personService.getAll();
     }
 
-    @PutMapping("/person/{id}/set/level/{level}")
-    public Person setLevel(@PathVariable Long id, @PathVariable String level) {
-        return personService.setLevel(id, level);
-    }
 
 }

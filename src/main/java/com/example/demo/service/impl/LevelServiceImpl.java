@@ -48,4 +48,24 @@ public class LevelServiceImpl implements LevelService {
         return (List<Level>) levelRepository.findAll();
     }
 
+    @Override
+    public Person setLevel(Long id, String level) {
+        Person person = personRepository.findById(id).orElseGet(Person::new);
+        List<Level> levels = (List<Level>) levelRepository.findAll();
+        for (Level tmp : levels) {
+            List<Person> personList = tmp.getPersons();
+            personList.remove(person);
+            tmp.setPersons(personList);
+            levelRepository.save(tmp);
+            if (tmp.getName().equalsIgnoreCase(level)) {
+                person.setLevel(tmp);
+                personList = tmp.getPersons();
+                personList.add(person);
+                tmp.setPersons(personList);
+                levelRepository.save(tmp);
+            }
+        }
+        return personRepository.save(person);
+    }
+
 }
