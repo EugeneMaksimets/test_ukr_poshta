@@ -13,6 +13,7 @@ PERSON:
     /person/all
 
 LEVEL:
+
     /level/create
     
     /level/update
@@ -38,6 +39,7 @@ PROJECT:
     /project/all
     
 ROLE: 
+
     /role/create
 
     /role/update
@@ -51,6 +53,7 @@ ROLE:
     /role/{role}/set/person/{id}
     
 TEAM: 
+
     /team/create
     
     /team/update
