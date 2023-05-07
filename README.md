@@ -16,12 +16,14 @@ LEVEL:
 
     /level/create
     
-    /level/update
-    
     /level/delete/{id}
     
     /level/{id}/level/all
+
+    /level/update
     
+    /level/{level}/set/person/{id}
+
     /level/{level}/set/person/{id}
     
 PROJECT: 
@@ -41,16 +43,18 @@ PROJECT:
 ROLE: 
 
     /role/create
-
-    /role/update
     
     /role/delete/{id}
     
-    /role/{id}"
+    /role/{id}
 
     /role/all
+
+    /role/update
     
     /role/{role}/set/person/{id}
+
+    /role/all/{role}
     
 TEAM: 
 

@@ -18,4 +18,6 @@ public interface LevelService {
 
     Person setLevel(Long id, String level);
 
+    List<Person> getByLevel(String level);
+
 }

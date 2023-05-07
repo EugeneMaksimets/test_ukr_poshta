@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Person;
 import com.example.demo.entity.Role;
-import com.example.demo.service.PersonService;
 import com.example.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,6 +30,11 @@ public class RoleController {
         return roleService.update(role);
     }
 
+    @PutMapping("/role/{role}/set/person/{id}")
+    public Person setRole(@PathVariable Long id, @PathVariable String role) {
+        return roleService.setRole(id, role);
+    }
+
     @DeleteMapping("/role/delete/{id}")
     public void delete(@PathVariable Long id) {
         roleService.delete(id);
@@ -46,8 +50,8 @@ public class RoleController {
         return roleService.getAll();
     }
 
-    @PutMapping("/role/{role}/set/person/{id}")
-    public Person setRole(@PathVariable Long id, @PathVariable String role) {
-        return roleService.setRole(id, role);
+    @GetMapping("/role/all/{role}")
+    public List<Person> getPersonsByRole(@PathVariable String role) {
+        return roleService.getByRole(role);
     }
 }

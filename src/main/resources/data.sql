@@ -23,7 +23,7 @@ INSERT INTO persons (name, last_name) VALUES
 
 INSERT INTO teams (name) VALUES
 ('Micro service'),
-('First team'),
+('Second team'),
 ('Another team');
 
 

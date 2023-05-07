@@ -68,4 +68,17 @@ public class LevelServiceImpl implements LevelService {
         return personRepository.save(person);
     }
 
+    @Override
+    public List<Person> getByLevel(String levelString) {
+        List<Level> levelList = (List<Level>) levelRepository.findAll();
+        Long levelId = null;
+        for (Level tmp : levelList) {
+            if (tmp.getName().equalsIgnoreCase(levelString)) {
+                levelId = tmp.getId();
+            }
+        }
+        assert levelId != null;
+        Level level = levelRepository.findById(levelId).orElseGet(Level::new);
+        return level.getPersons();
+    }
 }

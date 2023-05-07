@@ -18,6 +18,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+
     @Autowired
     private PersonRepository personRepository;
 

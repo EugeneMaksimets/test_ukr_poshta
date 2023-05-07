@@ -1,13 +1,9 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.converter.PersonConverter;
-import com.example.demo.entity.Level;
 import com.example.demo.entity.Person;
-import com.example.demo.entity.Project;
-import com.example.demo.entity.Role;
 import com.example.demo.repository.LevelRepository;
 import com.example.demo.repository.PersonRepository;
-import com.example.demo.repository.ProjectRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +17,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
 
     @Autowired
     LevelRepository levelRepository;

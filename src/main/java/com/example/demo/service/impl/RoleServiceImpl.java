@@ -57,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
             personList.remove(person);
             tmp.setPersons(personList);
             roleRepository.save(tmp);
-            if(tmp.getName().equalsIgnoreCase(role)) {
+            if (tmp.getName().equalsIgnoreCase(role)) {
                 person.setRole(tmp);
                 personList = tmp.getPersons();
                 personList.add(person);
@@ -66,5 +66,19 @@ public class RoleServiceImpl implements RoleService {
             }
         }
         return personRepository.save(person);
+    }
+
+    @Override
+    public List<Person> getByRole(String roleString) {
+        List<Role> roleList = (List<Role>) roleRepository.findAll();
+        Long roleId = null;
+        for (Role tmp : roleList) {
+            if (tmp.getName().equalsIgnoreCase(roleString)) {
+                roleId = tmp.getId();
+            }
+        }
+        assert roleId != null;
+        Role role = roleRepository.findById(roleId).orElseGet(Role::new);
+        return role.getPersons();
     }
 }

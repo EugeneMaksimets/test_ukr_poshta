@@ -19,4 +19,6 @@ public interface RoleService {
 
     Person setRole(Long id, String role);
 
+    List<Person> getByRole(String role);
+
 }

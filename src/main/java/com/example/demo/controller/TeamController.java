@@ -30,6 +30,21 @@ public class TeamController {
         return teamService.update(team);
     }
 
+    @PutMapping("team/{teamId}/add/person/{personId}")
+    public Team addPersonById(@PathVariable Long teamId, @PathVariable Long personId) {
+        return teamService.addPersonById(teamId, personId);
+    }
+
+    @PutMapping("team/{id}/add/person")
+    public Team addPerson(@PathVariable Long id, @RequestBody Person person) {
+        return teamService.addPerson(id, person);
+    }
+
+    @PutMapping("team/{teamId}/delete/person/{personId}")
+    public Team removePerson(@PathVariable Long teamId, @PathVariable Long personId) {
+        return teamService.deletePerson(teamId, personId);
+    }
+
     @DeleteMapping("/team/delete/{id}")
     public void delete(@PathVariable Long id) {
         teamService.delete(id);
@@ -45,18 +60,4 @@ public class TeamController {
         return teamService.getAll();
     }
 
-    @PutMapping("team/{teamId}/add/person/{personId}")
-    public Team addPersonById(@PathVariable Long teamId, @PathVariable Long personId) {
-        return teamService.addPersonById(teamId, personId);
-    }
-
-    @PutMapping("team/{id}/add/person")
-    public Team addPerson(@PathVariable Long id, @RequestBody Person person) {
-        return teamService.addPerson(id, person);
-    }
-
-    @PutMapping("team/{teamId}/delete/person/{personId}")
-    public Team removePerson(@PathVariable Long teamId, @PathVariable Long personId) {
-        return teamService.deletePerson(teamId, personId);
-    }
 }

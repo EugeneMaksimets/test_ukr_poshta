@@ -52,6 +52,8 @@ public class TeamServiceImpl implements TeamService {
     public Team addPersonById(Long idTeam, Long idPerson) {
         Person person = personRepository.findById(idPerson).orElseGet(Person::new);
         Team team = teamRepository.findById(idTeam).orElseGet(Team::new);
+        person.setTeam(team);
+        personRepository.save(person);
         List<Person> personListFromTeam = team.getPersons();
         personListFromTeam.add(person);
         team.setPersons(personListFromTeam);
@@ -60,8 +62,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team addPerson(Long id, Person person) {
-        personRepository.save(person);
         Team team = teamRepository.findById(id).orElseGet(Team::new);
+        person.setTeam(team);
+        personRepository.save(person);
         List<Person> personList = team.getPersons();
         personList.add(person);
         team.setPersons(personList);

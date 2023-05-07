@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 public class LevelController {
+
     @Autowired
     LevelService levelService;
 
@@ -27,6 +28,11 @@ public class LevelController {
     @PutMapping("/level/update")
     public Level update(@RequestBody Level level) {
         return levelService.update(level);
+    }
+
+    @PutMapping("/level/{level}/set/person/{id}")
+    public Person setLevel(@PathVariable Long id, @PathVariable String level) {
+        return levelService.setLevel(id, level);
     }
 
     @DeleteMapping("/level/delete/{id}")
@@ -44,9 +50,9 @@ public class LevelController {
         return levelService.getAll();
     }
 
-    @PutMapping("/level/{level}/set/person/{id}")
-    public Person setLevel(@PathVariable Long id, @PathVariable String level) {
-        return levelService.setLevel(id, level);
+    @GetMapping("/level/all/{level}")
+    public List<Person> getPersonsByLevel(@PathVariable String level) {
+        return levelService.getByLevel(level);
     }
 
 }
