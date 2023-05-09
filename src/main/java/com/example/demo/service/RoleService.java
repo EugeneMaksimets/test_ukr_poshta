@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Person;
 import com.example.demo.entity.Role;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface RoleService {
 
     Role getById(Long id);
 
-    void delete(Long id);
+    ResponseEntity<?> delete(Long id);
 
     List<Role> getAll();
 

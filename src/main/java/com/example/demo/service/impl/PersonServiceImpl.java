@@ -2,15 +2,21 @@ package com.example.demo.service.impl;
 
 import com.example.demo.converter.PersonConverter;
 import com.example.demo.entity.Person;
+import com.example.demo.exception.BusinessException;
 import com.example.demo.repository.LevelRepository;
 import com.example.demo.repository.PersonRepository;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.PersonService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -24,32 +30,52 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     RoleRepository roleRepository;
 
+    @SneakyThrows
     @Override
     public Person create(Person person) {
-        return personRepository.save(person);
+        try {
+            return personRepository.save(person);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException("Can't parse JSON", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @SneakyThrows
     @Override
     public Person update(Person person) {
-        Person peronForUpdate = personRepository.findById(person.getId()).orElseGet(Person::new);
-        return personRepository.save(PersonConverter.personConverter(person, peronForUpdate));
+        try {
+            Person peronForUpdate = personRepository.findById(person.getId()).orElseGet(Person::new);
+            return personRepository.save(PersonConverter.personConverter(person, peronForUpdate));
+        } catch (InvalidDataAccessApiUsageException e) {
+            throw new BusinessException("Can't parse JSON", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @SneakyThrows
     @Override
     public Person getById(Long id) {
-        Optional<Person> person = personRepository.findById(id);
-        return person.orElseGet(Person::new);
+        return personRepository.findById(id).orElseThrow(
+                () -> new BusinessException("Person with id " + id + " not found", null, HttpStatus.NOT_FOUND));
     }
 
+    @SneakyThrows
     @Override
-    public void delete(Long id) {
-        personRepository.deleteById(id);
+    public ResponseEntity<?> delete(Long id) {
+        try {
+            personRepository.deleteById(id);
+            return ResponseEntity.ok("Person with id: ".concat(id.toString()).concat(" has been remove"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new BusinessException("Cannot find ID", e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
+    @SneakyThrows
     @Override
     public List<Person> getAll() {
-        return (List<Person>) personRepository.findAll();
+        try {
+            return (List<Person>) personRepository.findAll();
+        } catch (Exception e) {
+            throw new BusinessException("Error", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
-
-
 }

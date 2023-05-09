@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Project;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ProjectService {
 
     Project getById(Long id);
 
-    void delete(Long id);
+    ResponseEntity<?> delete(Long id);
 
     List<Project> getAll();
 

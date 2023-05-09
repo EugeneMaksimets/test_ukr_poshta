@@ -4,12 +4,13 @@ import com.example.demo.entity.Person;
 import com.example.demo.entity.Team;
 import com.example.demo.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,28 +31,28 @@ public class TeamController {
         return teamService.update(team);
     }
 
-    @PutMapping("team/{teamId}/add/person/{personId}")
-    public Team addPersonById(@PathVariable Long teamId, @PathVariable Long personId) {
-        return teamService.addPersonById(teamId, personId);
+    @PutMapping("team/add/person")
+    public Team addPersonById(@RequestParam Long id, @RequestParam Long teamId) {
+        return teamService.addPersonById(teamId, id);
     }
 
-    @PutMapping("team/{id}/add/person")
-    public Team addPerson(@PathVariable Long id, @RequestBody Person person) {
+    @PutMapping("team/add/person/team")
+    public Team addPerson(@RequestParam Long id, @RequestBody Person person) {
         return teamService.addPerson(id, person);
     }
 
-    @PutMapping("team/{teamId}/delete/person/{personId}")
-    public Team removePerson(@PathVariable Long teamId, @PathVariable Long personId) {
-        return teamService.deletePerson(teamId, personId);
+    @PutMapping("team/delete/person")
+    public Team removePerson(@RequestParam Long id, @RequestParam Long teamId) {
+        return teamService.deletePerson(teamId, id);
     }
 
-    @DeleteMapping("/team/delete/{id}")
-    public void delete(@PathVariable Long id) {
-        teamService.delete(id);
+    @DeleteMapping("/team/delete")
+    public ResponseEntity<?> delete(@RequestParam Long id) {
+        return teamService.delete(id);
     }
 
-    @GetMapping("/team/{id}")
-    public Team getById(@PathVariable Long id) {
+    @GetMapping("/team")
+    public Team getById(@RequestParam Long id) {
         return teamService.getById(id);
     }
 

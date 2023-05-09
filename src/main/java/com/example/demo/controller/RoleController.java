@@ -4,12 +4,14 @@ import com.example.demo.entity.Person;
 import com.example.demo.entity.Role;
 import com.example.demo.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,18 +32,18 @@ public class RoleController {
         return roleService.update(role);
     }
 
-    @PutMapping("/role/{role}/set/person/{id}")
-    public Person setRole(@PathVariable Long id, @PathVariable String role) {
-        return roleService.setRole(id, role);
+    @PutMapping("/role/set/person")
+    public Person setRole(@RequestParam Long id, @RequestParam String roleId) {
+        return roleService.setRole(id, roleId);
     }
 
-    @DeleteMapping("/role/delete/{id}")
-    public void delete(@PathVariable Long id) {
-        roleService.delete(id);
+    @DeleteMapping("/role/delete")
+    public ResponseEntity<?> delete(@RequestParam Long id) {
+        return roleService.delete(id);
     }
 
-    @GetMapping("/role/{id}")
-    public Role getById(@PathVariable Long id) {
+    @GetMapping("/role")
+    public Role getById(@RequestParam Long id) {
         return roleService.getById(id);
     }
 
@@ -50,8 +52,8 @@ public class RoleController {
         return roleService.getAll();
     }
 
-    @GetMapping("/role/all/{role}")
-    public List<Person> getPersonsByRole(@PathVariable String role) {
+    @GetMapping("/role/name")
+    public List<Person> getPersonsByRole(@RequestParam String role) {
         return roleService.getByRole(role);
     }
 }

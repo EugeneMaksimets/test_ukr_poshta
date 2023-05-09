@@ -3,14 +3,20 @@ package com.example.demo.service.impl;
 import com.example.demo.converter.LevelConverter;
 import com.example.demo.entity.Level;
 import com.example.demo.entity.Person;
+import com.example.demo.exception.BusinessException;
 import com.example.demo.repository.LevelRepository;
 import com.example.demo.repository.PersonRepository;
 import com.example.demo.service.LevelService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LevelServiceImpl implements LevelService {
@@ -21,53 +27,84 @@ public class LevelServiceImpl implements LevelService {
     @Autowired
     PersonRepository personRepository;
 
+    @SneakyThrows
     @Override
     public Level create(Level level) {
-        return levelRepository.save(level);
+        try {
+            return levelRepository.save(level);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException("Can't parse JSON", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @SneakyThrows
     @Override
     public Level update(Level level) {
-        Level levelForUpdate = levelRepository.findById(level.getId()).orElseGet(Level::new);
-        return levelRepository.save(LevelConverter.levelConverter(level, levelForUpdate));
+        try {
+            Level levelForUpdate = levelRepository.findById(level.getId()).orElseGet(Level::new);
+            return levelRepository.save(LevelConverter.levelConverter(level, levelForUpdate));
+        } catch (InvalidDataAccessApiUsageException e) {
+            throw new BusinessException("Can't parse JSON", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @SneakyThrows
     @Override
     public Level getById(Long id) {
-        Optional<Level> level = levelRepository.findById(id);
-        return level.orElseGet(Level::new);
+        return levelRepository.findById(id).orElseThrow(
+                () -> new BusinessException("Level with id " + id + " not found", null, HttpStatus.NOT_FOUND));
     }
 
+    @SneakyThrows
     @Override
-    public void delete(Long id) {
-        levelRepository.deleteById(id);
+    public ResponseEntity<?> delete(Long id) {
+        try {
+            levelRepository.deleteById(id);
+            return ResponseEntity.ok("Level with id: ".concat(id.toString()).concat(" has been remove"));
+        } catch (EmptyResultDataAccessException e) {
+            throw new BusinessException("Cannot find ID", e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
+    @SneakyThrows
     @Override
     public List<Level> getAll() {
-        return (List<Level>) levelRepository.findAll();
+        try {
+            return (List<Level>) levelRepository.findAll();
+        } catch (Exception e) {
+            throw new BusinessException("Error", e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @SneakyThrows
     @Override
     public Person setLevel(Long id, String level) {
-        Person person = personRepository.findById(id).orElseGet(Person::new);
-        List<Level> levels = (List<Level>) levelRepository.findAll();
-        for (Level tmp : levels) {
-            List<Person> personList = tmp.getPersons();
-            personList.remove(person);
-            tmp.setPersons(personList);
-            levelRepository.save(tmp);
-            if (tmp.getName().equalsIgnoreCase(level)) {
-                person.setLevel(tmp);
-                personList = tmp.getPersons();
-                personList.add(person);
+        try {
+            Person person = personRepository.findById(id).orElseGet(Person::new);
+            List<Level> levels = (List<Level>) levelRepository.findAll();
+            for (Level tmp : levels) {
+                List<Person> personList = tmp.getPersons();
+                personList.remove(person);
                 tmp.setPersons(personList);
                 levelRepository.save(tmp);
+                if (tmp.getName().equalsIgnoreCase(level)) {
+                    person.setLevel(tmp);
+                    personList = tmp.getPersons();
+                    personList.add(person);
+                    tmp.setPersons(personList);
+                    levelRepository.save(tmp);
+                    break;
+                } else {
+                    throw new BusinessException("Incorrect level", null, HttpStatus.NOT_FOUND);
+                }
             }
+            return personRepository.save(person);
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException("Cannot find ID: ".concat(id.toString()), e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return personRepository.save(person);
     }
 
+    @SneakyThrows
     @Override
     public List<Person> getByLevel(String levelString) {
         List<Level> levelList = (List<Level>) levelRepository.findAll();
@@ -77,8 +114,12 @@ public class LevelServiceImpl implements LevelService {
                 levelId = tmp.getId();
             }
         }
-        assert levelId != null;
-        Level level = levelRepository.findById(levelId).orElseGet(Level::new);
-        return level.getPersons();
+        try {
+            assert levelId != null;
+            Level level = levelRepository.findById(levelId).orElseGet(Level::new);
+            return level.getPersons();
+        } catch (InvalidDataAccessApiUsageException e) {
+            throw new BusinessException("Incorrect level in api string", e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }

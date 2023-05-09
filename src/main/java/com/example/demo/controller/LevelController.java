@@ -4,12 +4,14 @@ import com.example.demo.entity.Level;
 import com.example.demo.entity.Person;
 import com.example.demo.service.LevelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 public class LevelController {
 
     @Autowired
-    LevelService levelService;
+    private LevelService levelService;
 
     @PostMapping("/level/create")
     public Level create(@RequestBody Level level) {
@@ -30,18 +32,18 @@ public class LevelController {
         return levelService.update(level);
     }
 
-    @PutMapping("/level/{level}/set/person/{id}")
-    public Person setLevel(@PathVariable Long id, @PathVariable String level) {
+    @PutMapping("/level/set/person")
+    public Person setLevel(@RequestParam Long id, @RequestParam String level) {
         return levelService.setLevel(id, level);
     }
 
-    @DeleteMapping("/level/delete/{id}")
-    public void delete(@PathVariable Long id) {
-        levelService.delete(id);
+    @DeleteMapping("/level/delete")
+    public ResponseEntity<?> delete(@RequestParam Long id) {
+        return levelService.delete(id);
     }
 
-    @GetMapping("/level/{id}")
-    public Level getById(@PathVariable Long id) {
+    @GetMapping("/level")
+    public Level getById(@RequestParam Long id) {
         return levelService.getById(id);
     }
 
@@ -50,8 +52,8 @@ public class LevelController {
         return levelService.getAll();
     }
 
-    @GetMapping("/level/all/{level}")
-    public List<Person> getPersonsByLevel(@PathVariable String level) {
+    @GetMapping("/level/all/name")
+    public List<Person> getPersonsByLevel(@RequestParam String level) {
         return levelService.getByLevel(level);
     }
 

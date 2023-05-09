@@ -6,9 +6,9 @@ PERSON:
 
     /person/update
 
-    /person/delete/{id}
+    /person/delete {QuerryParam = id}
 
-    /person/{id}
+    /person {QuerryParam = id}
 
     /person/all
 
@@ -16,15 +16,15 @@ LEVEL:
 
     /level/create
     
-    /level/delete/{id}
+    /level/delete {QuerryParam = id}
     
-    /level/{id}/level/all
+    /level/all/name {QuerryParam = level} 
 
     /level/update
-    
-    /level/{level}/set/person/{id}
 
-    /level/{level}/set/person/{id}
+    /level/set/person {QuerryParam = id, QuerryParam = level}
+
+    (QuerryParam level - string name like junior)
     
 PROJECT: 
 
@@ -32,11 +32,11 @@ PROJECT:
 
     /project/update
 
-    /project/{idProject}/add/person/{idPerson}
+    /project/add/person{QuerryParam = id, QuerryParam = idProject}
 
-    /project/delete/{id}
+    /project/delete {QuerryParam = id}
 
-    /project/{id}
+    /project {QuerryParam = id}
 
     /project/all
     
@@ -44,17 +44,19 @@ ROLE:
 
     /role/create
     
-    /role/delete/{id}
+    /role/delete {QuerryParam = id}
     
-    /role/{id}
+    /role {QuerryParam = id}
 
     /role/all
 
     /role/update
     
-    /role/{role}/set/person/{id}
+    /role/set/person {QuerryParam = id, QuerryParam = roleId}
 
-    /role/all/{role}
+    /role/name {QuerryParam = role}
+
+    (QuerryParam role - string name role like developer)
     
 TEAM: 
 
@@ -62,14 +64,14 @@ TEAM:
     
     /team/update
     
-    /team/delete/{id}
+    /team/delete {QuerryParam = id}
     
-    /team/{id}
+    /team {QuerryParam = id}
     
     /team/all
     
-    team/{teamId}/add/person/{personId}
+    team/add/person/ {QuerryParam = id, QuerryParam = teamId}
     
     team/{id}/add/person
     
-    team/{teamId}/delete/person/{personId}
+    team/delete/person/ {QuerryParam = id, QuerryParam = teamId}
