@@ -8,23 +8,23 @@ INSERT INTO levels (name) VALUES
 ('Middle'),
 ('Senior');
 
-
------------------------------------FOR TEST -----------------------------------------------
-
-INSERT INTO projects (name, description) VALUES
-('Project One', 'some description1'),
-('Project Two', 'some description2'),
-('Some Project', 'some description3');
-
-INSERT INTO persons (name, last_name) VALUES
-('Yevhen', 'Maksimets'),
-('Roman', 'Obramenko'),
-('Katya', 'Sirotyuk');
-
-INSERT INTO teams (name) VALUES
-('Micro service'),
-('Second team'),
-('Another team');
+--
+-- ----------------------------------- FOR TEST POSTMAN-----------------------------------------------
+--
+-- INSERT INTO projects (name, description) VALUES
+-- ('Project One', 'some description1'),
+-- ('Project Two', 'some description2'),
+-- ('Some Project', 'some description3');
+--
+-- INSERT INTO persons (name, last_name) VALUES
+-- ('Yevhen', 'Maksimets'),
+-- ('Roman', 'Obramenko'),
+-- ('Katya', 'Sirotyuk');
+--
+-- INSERT INTO teams (name) VALUES
+-- ('Micro service'),
+-- ('Second team'),
+-- ('Another team');
 
 
 

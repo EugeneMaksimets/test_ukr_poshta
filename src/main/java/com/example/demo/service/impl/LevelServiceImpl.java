@@ -118,7 +118,7 @@ public class LevelServiceImpl implements LevelService {
             assert levelId != null;
             Level level = levelRepository.findById(levelId).orElseGet(Level::new);
             return level.getPersons();
-        } catch (InvalidDataAccessApiUsageException e) {
+        } catch (InvalidDataAccessApiUsageException | NullPointerException e) {
             throw new BusinessException("Incorrect level in api string", e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
